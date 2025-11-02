@@ -108,26 +108,18 @@ def mock_get_price_graph_data(car_details: str) -> dict:
 # --- NEW: EXTERNAL API MOCKS (Sentiment, News, Competitors) ---
 
 async def mock_get_news(car_details: str) -> dict:
-    """
-    MOCK: Simulates calling the NewsAPI.
-    In a real app, you'd use httpx here.
-    """
-    time.sleep(0.5)
-    
-    # --- REAL HTTPX CODE EXAMPLE (you can uncomment this) ---
-    # if NEWS_API_KEY:
-    #     try:
-    #         async with httpx.AsyncClient() as client:
-    #             params = {"q": car_details, "apiKey": NEWS_API_KEY, "pageSize": 3, "sortBy": "relevancy"}
-    #             response = await client.get("https://newsapi.org/v2/everything", params=params)
-    #         articles = response.json().get("articles", [])
-    #         return {
-    #             "summary": f"Found {len(articles)} relevant articles.",
-    #             "articles": [{"title": a['title'], "source": a['source']['name'], "url": a['url']} for a in articles]
-    #         }
-    #     except Exception as e:
-    #         print(f"NewsAPI call failed: {e}")
-    # --- END REAL CODE EXAMPLE ---
+    if NEWS_API_KEY:
+        try:
+            async with httpx.AsyncClient() as client:
+                params = {"q": car_details, "apiKey": NEWS_API_KEY, "pageSize": 3, "sortBy": "relevancy"}
+                response = await client.get("https://newsapi.org/v2/everything", params=params)
+            articles = response.json().get("articles", [])
+            return {
+                "summary": f"Found {len(articles)} relevant articles.",
+                "articles": [{"title": a['title'], "source": a['source']['name'], "url": a['url']} for a in articles]
+            }
+        except Exception as e:
+            print(f"NewsAPI call failed: {e}")
 
     return {
         "summary": "Recent news is positive, highlighting new safety features.",

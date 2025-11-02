@@ -1,2 +1,10 @@
 .env
 .DS_Store
+horcurx/.env
+horcurx/final_demand_model.pkl
+horcurx/firebase-service-account.json
+horcurx/final_processed_cars.csv
+horcurx/node_modules
+horcurx/dist
+horcurx/.vite/
+horcurx/public/
