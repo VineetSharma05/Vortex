@@ -2,10 +2,12 @@ import pandas as pd
 import numpy as np
 import joblib
 import warnings
+from pathlib import Path
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
+BASE_DIR = Path(__file__).resolve().parent
 warnings.filterwarnings("ignore")
 
 # --- 1. COPIED FROM YOUR JUPYTER NOTEBOOK ---
@@ -133,21 +135,27 @@ class HybridDemandForecaster:
             "sarimax_models": self.sarimax_models,
             "feature_importances": self.feature_importances_,
         }
-        joblib.dump(data, filepath)
-        print(f"💾 Model saved successfully to {filepath}\n")
+        path = Path(filepath)
+        if not path.is_absolute():
+            path = BASE_DIR / path
+        joblib.dump(data, path)
+        print(f"💾 Model saved successfully to {path}\n")
 
     @staticmethod
     def load(filepath="hybrid_demand_model.pkl"):
         try:
-            data = joblib.load(filepath)
+            path = Path(filepath)
+            if not path.is_absolute():
+                path = BASE_DIR / path
+            data = joblib.load(path)
             model = HybridDemandForecaster()
             model.rf_model = data["rf_model"]
             model.sarimax_models = data["sarimax_models"]
             model.feature_importances_ = data["feature_importances"]
-            print(f"✅ Hybrid Demand Model loaded successfully from {filepath}")
+            print(f"✅ Hybrid Demand Model loaded successfully from {path}")
             return model
         except FileNotFoundError:
-            print(f"⚠️ MODEL FILE NOT FOUND at {filepath}. API will use mock data.")
+            print(f"⚠️ MODEL FILE NOT FOUND at {path}. API will use mock data.")
             return None
         except Exception as e:
             print(f"⚠️ Error loading model: {e}. API will use mock data.")
@@ -164,7 +172,7 @@ DEMAND_MODEL_FEATURES = [
 
 # --- 3. LOAD THE MODEL ON STARTUP ---
 # This code runs ONCE when main.py imports this file.
-demand_model = HybridDemandForecaster.load("final_demand_model.pkl")
+demand_model = HybridDemandForecaster.load(BASE_DIR / "final_demand_model.pkl")
 
 # --- 4. PREDICTION FUNCTION ---
 # This is the new function our API will call.

@@ -1,10 +1,26 @@
-.env
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+final_demand_model.pkl
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-horcurx/.env
-horcurx/final_demand_model.pkl
-horcurx/firebase-service-account.json
-horcurx/final_processed_cars.csv
-horcurx/node_modules
-horcurx/dist
-horcurx/.vite/
-horcurx/public/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

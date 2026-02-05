@@ -11,8 +11,15 @@ import json
 import io
 import base64
 from datetime import datetime
+from pathlib import Path
+import sys
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pandas as pd # <-- For ML model
+
+BASE_DIR = Path(__file__).resolve().parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 import ml_models    # <-- Your REAL demand model
 
 # --- Matplotlib Setup (for non-interactive backend) ---
@@ -46,7 +53,7 @@ DEMAND_MULTIPLIERS = {
 }
 
 # --- NEW: Load the REAL CSV database on startup ---
-CSV_FILE_PATH = 'final_processed_cars.csv' # Make sure this file is in the same directory
+CSV_FILE_PATH = BASE_DIR / 'final_processed_cars.csv' # Make sure this file is in the same directory
 CAR_DATABASE_DF = None
 try:
     CAR_DATABASE_DF = pd.read_csv(CSV_FILE_PATH)
@@ -65,12 +72,12 @@ except Exception as e:
 # --- Firebase Initialization ---
 try:
     # Path to your service account key JSON file
-    cred_path = 'firebase-service-account.json' 
-    if not os.path.exists(cred_path):
+    cred_path = BASE_DIR / 'firebase-service-account.json'
+    if not cred_path.exists():
         print("WARNING: 'firebase-service-account.json' not found. Feedback loop will not work.")
         db = None
     else:
-        cred = credentials.Certificate(cred_path)
+        cred = credentials.Certificate(str(cred_path))
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         print("Firebase Firestore initialized successfully.")
