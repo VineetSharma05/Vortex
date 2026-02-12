@@ -424,7 +424,7 @@ function DemandReport({ data }) {
       <h4 className="text-lg font-semibold text-blue-400 mb-3">30-Day Demand Forecast</h4>
       <div className="space-y-2">
         <DemandRow title="High Demand" models={data.high_demand} color="text-green-400" />
-        <DemandRow title="Medium Demand" models={Tta.medium_demand} color="text-yellow-400" />
+        <DemandRow title="Medium Demand" models={data.medium_demand} color="text-yellow-400" />
         <DemandRow title="Low Demand" models={data.low_demand} color="text-red-400" />
       </div>
     </div>
