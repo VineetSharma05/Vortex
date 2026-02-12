@@ -24,3 +24,6 @@ final_demand_model.pkl
 *.njsproj
 *.sln
 *.sw?
+.env
+__pycache__/
+**/__pycache__/
