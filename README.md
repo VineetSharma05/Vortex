@@ -216,7 +216,9 @@ The Backend has CORS enabled for all origins. If issues persist, check FastAPI C
 
 ## Contributors
 
+
 Built as a hackathon project for intelligent dealership operations.
+
 
 ## License
 
